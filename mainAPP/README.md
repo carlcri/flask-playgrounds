@@ -88,3 +88,39 @@ Y el codigo *html* de la forma:
         <input type="submit" value="Enviar">
     </form>
 ```
+
+### Implementando estructuras de control 
+
+Puedes utilizar la sintaxis de Jinja2, que es el motor de plantillas que Flask utiliza por defecto:
+
+```html
+    {% if not name %}
+        <form action = "http://127.0.0.1:5000/form-example" method="post">
+            <h3>Llena el formulario</h3>
+            <label for="name">
+                <span>Nombre</span>
+                <input type="text" id="name" name="name">
+            </label>
+            <input type="submit" value="Enviar">
+        </form>
+    {% else %}
+        <p>Welcome: {{name}}</p> 👈
+    {% endif %}
+```
+
+Y en el main.py, fijate estamos renderizando el mismo template para los dos metodos:
+
+```py
+@app.route('/form-example', methods=['GET', 'POST'])
+def form_example():
+
+    if request.method == 'POST':
+        name = request.form.get('name')
+        context = {
+            'name': name
+            }
+
+        return render_template('form_example.html', **context) 👈
+
+    return render_template('form_example.html')
+```

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Example</title>
+</head>
+<body>
+    {% if not name %}
+        <form action = "http://127.0.0.1:5000/form-example" method="post">
+            <h3>Llena el formulario</h3>
+            <label for="name">
+                <span>Nombre</span>
+                <input type="text" id="name" name="name">
+            </label>
+            <input type="submit" value="Enviar">
+        </form>
+    {% else %}
+        <p>Welcome: {{name}}</p>
+    {% endif %}
+
+</body>
+</html>

@@ -39,6 +39,10 @@ def form_example():
 
     if request.method == 'POST':
         name = request.form.get('name')
-        return f'Your name is {name}'
-    
+        context = {
+            'name': name
+            }
+
+        return render_template('form_example.html', **context)
+
     return render_template('form_example.html')
