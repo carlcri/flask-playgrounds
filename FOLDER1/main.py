@@ -1,8 +1,8 @@
 # export FLASK_APP=main.py
 # export FLASK_DEBUG=1
 # flask run
-
-from flask import Flask, request
+import os
+from flask import Flask, request, render_template
 
 # se instancia un objeto de Flask
 app = Flask(__name__)
@@ -11,7 +11,11 @@ app = Flask(__name__)
 # Ruta raiz
 @app.route('/')
 def root():
-    return 'Hello-World'
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    last_directory = os.path.basename(current_directory)
+
+    return f'Current Project: {last_directory}'
+
 
 
 @app.route('/query-example')
@@ -21,7 +25,20 @@ def query_example():
     lastname = request.args.get('lastname')
     age = request.args.get('age')
 
-    return '''
-              <h2>my name is: {}</h2>
-              <h2>my last name is: {}</h2>
-              <h2>I am {} years old'''.format(name, lastname, age)
+    context = {
+        'name': name,
+        'lastname': lastname,
+        'age': age,
+    }
+
+    return render_template('query_example.html', **context)
+
+
+@app.route('/form-example', methods=['GET', 'POST'])
+def form_example():
+
+    if request.method == 'POST':
+        name = request.form.get('name')
+        return f'Your name is {name}'
+    
+    return render_template('form_example.html')

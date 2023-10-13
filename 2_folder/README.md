@@ -1,0 +1,1 @@
+Corre el servidor FLASK, y click derecho sobre *login.html* --> live-server
