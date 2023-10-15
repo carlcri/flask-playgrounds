@@ -124,3 +124,11 @@ def form_example():
 
     return render_template('form_example.html')
 ```
+
+### Reorganizando la aplicacion
+
+He reorganizado toda la aplicacion, para no tener ese codigo espagueti, sino modularizada:
+
+![](https://i.imgur.com/VR0bdQh.png)
+
+En este momento estoy haciendo pruebas, y toda la configuracion de la aplicacion se esta cargando dese **.env**. 

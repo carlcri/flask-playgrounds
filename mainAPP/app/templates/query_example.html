@@ -1,0 +1,12 @@
+<!-- se hereda del base.html -->
+{% extends 'base.html'%}
+
+
+{% block title %}
+    {{super()}}
+    query 
+{% endblock%}
+
+{% block content %}
+    <h2> my name is {{name}} {{lastname}}, and I am {{age}} years old</h2>
+{% endblock %}

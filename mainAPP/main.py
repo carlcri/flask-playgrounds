@@ -2,10 +2,12 @@
 # export FLASK_DEBUG=1
 # flask run
 import os
-from flask import Flask, request, render_template
+from flask import request, render_template
 
-# se instancia un objeto de Flask
-app = Flask(__name__)
+# importamos la funcion para crear la aplicacion y la forma
+from app import create_app
+
+app = create_app()
 
 
 # Ruta raiz
@@ -13,6 +15,9 @@ app = Flask(__name__)
 def root():
     current_directory = os.path.dirname(os.path.abspath(__file__))
     last_directory = os.path.basename(current_directory)
+
+    print(app.config['SECRET_KEY'])
+    print(app.config['NEON_URI'])
 
     return f'Current Project: {last_directory}'
 
@@ -46,3 +51,13 @@ def form_example():
         return render_template('form_example.html', **context)
 
     return render_template('form_example.html')
+
+
+@app.route('/query-by-age/<age>')
+def query_employee_by_age(age):
+    return f'your age:{age}'
+
+
+
+
+
