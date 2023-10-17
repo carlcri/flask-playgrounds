@@ -131,4 +131,4 @@ He reorganizado toda la aplicacion, para no tener ese codigo espagueti, sino mod
 
 ![](https://i.imgur.com/VR0bdQh.png)
 
-En este momento estoy haciendo pruebas, y toda la configuracion de la aplicacion se esta cargando dese **.env**. 
+En este momento estoy haciendo pruebas, y toda la configuracion de la aplicacion se esta cargando desde **.env**. 

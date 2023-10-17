@@ -3,6 +3,7 @@
 # flask run
 import os
 from flask import request, render_template
+from app.services import EmployeeService
 
 # importamos la funcion para crear la aplicacion y la forma
 from app import create_app
@@ -53,11 +54,44 @@ def form_example():
     return render_template('form_example.html')
 
 
-@app.route('/query-by-age/<age>')
-def query_employee_by_age(age):
-    return f'your age:{age}'
+@app.route('/query-by-id/<id>')
+def query_employee_by_id(id):
+
+    connection_string = app.config['NEON_URI']
+    result = EmployeeService.query_employee_by_id(connection_string, id)
+    context = result
+    context.update({'query_id': id})
+
+    return render_template('query_by_id.html', **context)
 
 
+@app.route('/new-employee', methods=['GET', 'POST'])
+def new_employee():
+
+    if request.method == 'POST':
+
+        name = request.form.get('name')
+        lastname = request.form.get('lastname')
+
+        context = {
+            'name': name,
+            'lastname': lastname,
+            }
+        
+        connection_string = app.config['NEON_URI']
+        returned_id = EmployeeService.insert_employee(connection_string=connection_string,
+                                                       **context)
+        
+        context.update({'returned_id': returned_id})
+
+        return render_template('new_employee.html', **context)
+
+    return render_template('new_employee.html')
+
+    
+
+
+#    return f'your age:{age}'
 
 
 

@@ -1,0 +1,30 @@
+<!-- se hereda del base.html -->
+{% extends 'base.html'%}
+
+{% block title %}
+    {{super()}}
+    new  
+{% endblock%}
+
+{% block content%}
+    {% if not name %}
+        <form action = "http://127.0.0.1:5000/new-employee" method="post">
+            <h3>New Employee</h3>
+            <label for="name">
+                <span>First Name</span>
+                <input type="text" id="name" name="name" required>
+            </label>
+            <label for="lastname">
+                <span>Last Name</span>
+                <input type="text" id="lastname" name="lastname" required>
+            </label>
+            <input type="submit" value="Enviar">
+        </form>
+    {% else %}
+        <p>New employee {{name}} {{lastname}} created with id: {{returned_id}}</p>
+    {% endif %}
+{% endblock%}
+
+
+   
+

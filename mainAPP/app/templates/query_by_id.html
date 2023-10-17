@@ -1,0 +1,17 @@
+<!-- se hereda del base.html -->
+{% extends 'base.html'%}
+
+
+{% block title %}
+    {{super()}}
+    {{name}}
+{% endblock%}
+
+{% block content %}
+    {% if not id %}
+        <h3>id: {{query_id}}: does not exists</h3>
+    {% else %}
+        <h3> id: {{id}},  name: {{name}},  lastname: {{lastname}}</h3>
+    {% endif %}
+
+{% endblock %}
