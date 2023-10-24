@@ -18,7 +18,11 @@
                 <span>Last Name</span>
                 <input type="text" id="lastname" name="lastname" required>
             </label>
-            <input type="submit" value="Enviar">
+            <label for="birthdate">
+                <span>Last Name</span>
+                <input type="date" id="birthdate" name="birthdate" >
+            </label>
+            <button type="submit">Enviar</button>
         </form>
     {% else %}
         <p>New employee {{name}} {{lastname}} created with id: {{returned_id}}</p>

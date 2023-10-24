@@ -1,7 +1,7 @@
 # export FLASK_APP=main.py
 # export FLASK_DEBUG=1
 # flask run
-import os
+import os, click
 from flask import request, render_template
 from app.services import EmployeeService
 
@@ -72,10 +72,14 @@ def new_employee():
 
         name = request.form.get('name')
         lastname = request.form.get('lastname')
+        birthdate = request.form.get('birthdate')
+
+        click.echo(click.style(f'fecha de nacimiento: {birthdate}, type: {type(birthdate)}' , fg='green'))
 
         context = {
             'name': name,
             'lastname': lastname,
+            'birthdate': birthdate,
             }
         
         connection_string = app.config['NEON_URI']

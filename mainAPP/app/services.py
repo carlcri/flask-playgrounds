@@ -1,4 +1,4 @@
-import pprint, psycopg2
+import pprint, psycopg2, click
 from psycopg2.extras import RealDictCursor
 
 class EmployeeService:
@@ -16,7 +16,7 @@ class EmployeeService:
 
         else:
 
-            sql =f'''SELECT id,name,lastname FROM employees 
+            sql =f'''SELECT id,name,lastname, birthdate FROM employees 
                      WHERE id = {id}'''
             
             cursor = conn.cursor(cursor_factory=RealDictCursor)
@@ -40,7 +40,7 @@ class EmployeeService:
         
         
     @staticmethod    
-    def insert_employee(connection_string: str, name, lastname):
+    def insert_employee(connection_string: str, name, lastname, birthdate):
 
         NEON_URI = connection_string
 
@@ -52,9 +52,12 @@ class EmployeeService:
 
         else:
 
-            
-            sql = f'''INSERT INTO employees(id,name, lastname)
-                    VALUES (56,'{name}', '{lastname}') returning id;'''
+            if len(birthdate) != 0:
+                sql = f'''INSERT INTO employees(name, lastname, birthdate)
+                    VALUES ('{name}', '{lastname}', '{birthdate}') returning id;'''
+            else: 
+                sql = f'''INSERT INTO employees(name, lastname)
+                    VALUES ('{name}', '{lastname}') returning id;'''
             
             cursor = conn.cursor()
 
