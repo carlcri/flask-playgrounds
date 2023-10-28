@@ -1,0 +1,11 @@
+.navbar-custom {
+    background-color: #3b4b34; /* Puedes cambiar este código de color */
+    transition: background-color 0.5s;
+}
+
+body {
+    background-color: #ca3939;
+    color: white
+}
+
+/*212121*/
