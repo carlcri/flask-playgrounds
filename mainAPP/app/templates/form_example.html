@@ -1,5 +1,5 @@
 <!-- se hereda del base.html -->
-{% extends 'base.html'%}
+{% extends 'base1.html'%}
 
 {% block title %}
     {{super()}}
@@ -17,7 +17,7 @@
             <input type="submit" value="Enviar">
         </form>
     {% else %}
-        <p>Welcome: {{name}}</p>
+        <p>Welcome: {{name|capitalize}}</p>
     {% endif %}
 {% endblock%}
 

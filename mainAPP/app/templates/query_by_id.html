@@ -1,17 +1,42 @@
 <!-- se hereda del base.html -->
-{% extends 'base.html'%}
+{% extends 'base1.html'%}
 
 
 {% block title %}
     {{super()}}
-    {{name}}
+    {{name|upper}}
 {% endblock%}
 
 {% block content %}
     {% if not id %}
         <h3>id: {{query_id}}: does not exists</h3>
     {% else %}
-        <h3> id: {{id}},  name: {{name}},  lastname: {{lastname}}, birthdate: {{birthdate}}</h3>
+
+        <h3>Resultado</h3>
+
+        <div class="test">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Nacimiento</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{id}}</td>
+                        <td>{{name|capitalize}}</td>
+                        <td>{{lastname|capitalize}}</td>
+                        <td>{{birthdate}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+        
     {% endif %}
 
 {% endblock %}

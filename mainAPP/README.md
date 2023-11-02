@@ -136,3 +136,11 @@ En este momento estoy haciendo pruebas, y toda la configuracion de la aplicacion
 ### Probando la aplicacion
 
 En este momento
+
+### Bootstrap
+
+En el modulo de *bootstrap* se hicieron diferentes practicas, se creo una bonita barra de navegacion, usando Bootstrap, la herencia, y los templates. Tambien estamos aprendiendo a renderizar los datos en tablas, para que se vea mas atractivo, tal y como ocurre en la ruta *query-by-id*
+
+![](https://i.imgur.com/YhCj0gy.png)
+
+https://platzi.com/tutoriales/1480-postgresql/6559-implementacion-de-replicas-en-postgres-con-docker-2/
