@@ -11,3 +11,5 @@ app = create_app()
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data_base.db"
 db = SQLAlchemy(app)
+
+from market import routes

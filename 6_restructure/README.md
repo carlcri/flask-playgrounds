@@ -410,7 +410,7 @@ db = SQLAlchemy(app) 👈
 - En models.py muevo la clase Item, e importo la *db*:
 
 ```py
-from market import db
+from market import db 👈
 
 class Item(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
@@ -421,3 +421,57 @@ class Item(db.Model):
     def __repr__(self):
         return f'{self.producto}'
 ```
+- Se crea routes.py:
+
+```py
+from market import app
+from market.models import Item
+from flask import render_template
+import click
+
+
+@app.route('/')
+@app.route('/home')
+def home():
+    items = [
+        {'id':1, 'producto': 'cebolla', 'cantidad': 10, 'precio unitario': 2},
+        {'id':2, 'producto': 'tomate', 'cantidad': 4, 'precio unitario': 5},
+        {'id':3, 'producto': 'pechuga', 'cantidad': 2, 'precio unitario': 14}
+    ]
+    consulta = Item.query.filter_by(precio=10.5)
+    for item in consulta:
+        click.echo(click.style(f'item_id:{item.id} precio:{item.precio}', fg='green'))
+        
+    consulta = Item.query.all()
+
+    return render_template('home.html', items=items, consulta=consulta) 
+
+
+@app.route('/test')
+def test():
+    return render_template('test.html')
+```
+
+- Sin embargo hay un error 404. Que el profesor resuelve, con este statement en el *init*:
+
+![](https://i.imgur.com/LyewXrm.png)
+
+```py
+from flask import Flask
+from flask_bootstrap import Bootstrap
+from flask_sqlalchemy import SQLAlchemy
+
+def create_app():
+    app = Flask(__name__)
+    Bootstrap(app)
+    return app
+
+app = create_app()
+
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data_base.db"
+db = SQLAlchemy(app)
+
+from market import routes 👈
+```
+
+- Como vez lo importo de una manera un poco extraña. 
