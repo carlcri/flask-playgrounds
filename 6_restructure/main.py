@@ -2,21 +2,27 @@
 # export FLASK_DEBUG=1
 # flask run
 
+from market import app 
+
 from flask import Flask, render_template
-from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy 
 import click
 
-def create_app():
-    app = Flask(__name__)
-    Bootstrap(app)
-    return app
 
-app = create_app()
 
 # configure the SQLite database, relative to the app instance folder
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data_base.db"
 db = SQLAlchemy(app)
+
+
+class Item(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    producto = db.Column(db.String(length=30), nullable=False, unique=True)
+    barcode = db.Column(db.String(length=12), nullable=False, unique=True)
+    precio = db.Column(db.Float(), nullable=False)
+
+    def __repr__(self):
+        return f'{self.producto}'
 
 
 @app.route('/')
@@ -39,4 +45,3 @@ def home():
 @app.route('/test')
 def test():
     return render_template('test.html')
-
