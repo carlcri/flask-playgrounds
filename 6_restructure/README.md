@@ -95,7 +95,7 @@ Template Designer Documentation
 
 https://jinja.palletsprojects.com/en/3.1.x/templates/#super-blocks
 
-# Databases
+# 5_Databases
 
 Modificaremos la ruta *home* para renderizar una tabla para mostrar una lista de compras:
 
@@ -295,7 +295,7 @@ DB Browser for SQLite (DB4S) is a high quality, visual, open source tool to crea
 
 Se descargo como una AppImage, click derecho para darle permisos de ejecucion. Pero no funciono.
 
-## Reestructuracion del Proyecto
+## 6_Reestructuracion del Proyecto
 
 Por ahora todo el codigo esta en el archivo main.py, sin embargo, vamos por ejemplo a mover las clases a un nuevo archivo, llamado *models.py*:
 
@@ -374,10 +374,8 @@ El proceso no es muy straight-forward, en realidad me toco deshacer todos los ca
 - creando el archivo init.py con una configuracion basica:
 
 ```py
-from flask import Flask, render_template
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask
 from flask_bootstrap import Bootstrap
-
 
 def create_app():
     app = Flask(__name__)
@@ -388,4 +386,38 @@ app = create_app()
 ```
 
 - En el main.py importo desde el modulo: *from market import app*
+- Luego Pruebo, y falla, muevo la carpeta *templates* y *static* dentro del modulo *market*. Y funciona 😊
 
+- Creo models.py
+- Modifico init.py:
+
+```py
+from flask import Flask
+from flask_bootstrap import Bootstrap
+from flask_sqlalchemy import SQLAlchemy
+
+def create_app():
+    app = Flask(__name__)
+    Bootstrap(app)
+    return app
+
+app = create_app()
+
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data_base.db" 👈
+db = SQLAlchemy(app) 👈
+```
+
+- En models.py muevo la clase Item, e importo la *db*:
+
+```py
+from market import db
+
+class Item(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    producto = db.Column(db.String(length=30), nullable=False, unique=True)
+    barcode = db.Column(db.String(length=12), nullable=False, unique=True)
+    precio = db.Column(db.Float(), nullable=False)
+
+    def __repr__(self):
+        return f'{self.producto}'
+```
