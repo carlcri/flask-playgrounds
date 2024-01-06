@@ -1,0 +1,38 @@
+<!-- se hereda del base.html-->
+{% extends 'base.html'%}
+
+{% block content%}
+    <div class="main-table">
+        <p id="titulo-tabla">Lista de compras desde SQLAlquemy</p>
+        
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>producto</th>
+                    <th>barcode</th>
+                    <th>precio</th>
+                    <th>opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in consulta %}
+                <tr>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.producto}}</td>
+                    <td>{{ item.barcode}}</td>
+                    <td>{{ item.precio}}</td>
+                    <td>
+                        <button class="btn btn-outline btn-info">More Info</button>
+                        <button class="btn btn-outline btn-info">Comprar</button>
+
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+    </div>
+{% endblock%}
+
+
