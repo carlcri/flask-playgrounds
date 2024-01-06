@@ -7,7 +7,7 @@ import click
 @app.route('/')
 @app.route('/home')
 def home():
-    consulta = Item.query.filter_by(precio=10.5)
+    consulta = Item.query.filter_by(precio=10.45)
     for item in consulta:
         click.echo(click.style(f'item_id:{item.id} precio:{item.precio}', fg='green'))
         
