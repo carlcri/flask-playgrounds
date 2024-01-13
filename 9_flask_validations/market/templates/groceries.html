@@ -1,0 +1,32 @@
+<!-- se hereda del base.html-->
+{% extends 'base.html'%}
+
+{% block content%}
+    <div class="main-table">
+        <p id="titulo-tabla">Lista de compras estatica</p>
+        <table class="table table-hover">
+            <thead>
+                <tr class="aux">
+                    <th>id</th>
+                    <th>producto</th>
+                    <th>cantidad</th>
+                    <th>precio unitario</th>
+                    <th>subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.producto }}</td>
+                        <td>{{ item.cantidad }}</td>
+                        <td>{{ item["precio unitario"] }}</td>
+                        <td>{{ item.cantidad * item["precio unitario"] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>      
+    </div>
+{% endblock%}
+
+

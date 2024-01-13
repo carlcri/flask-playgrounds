@@ -2,8 +2,8 @@ from flask_wtf import FlaskForm
 from wtforms.fields import PasswordField, StringField, SubmitField
 
 class RegisterForm(FlaskForm):
-    username = StringField(label='Usuario')
-    email_address = StringField(label='Correo electronico')
-    password1 = PasswordField(label='Contraseña')
-    password2 = PasswordField(label='Confirmar contraseña')
+    username = StringField(label='usuario')
+    email_address = StringField(label='correo electronico')
+    password1 = PasswordField(label='contraseña')
+    password2 = PasswordField(label='confirmar contraseña')
     submit = SubmitField('Registrarse') 

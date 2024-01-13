@@ -12,7 +12,10 @@
     <div class="container">
         <h2 class="titulo-1">Llena el Formulario</h2>
         <br>
-        <form action="" class="form-register">
+        <form action="" class="form-register" method="POST">
+            <!-- CSFR ToKEN -->
+            {{ register_form.hidden_tag() }}
+
             <div class="form-register-field">{{ register_form.username.label() | upper }}</div>
             {{ register_form.username(class="form-control", placeholder=" tu usuario")}}
 
