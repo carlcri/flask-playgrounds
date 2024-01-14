@@ -1,5 +1,5 @@
-from market import app
-from market.models import Item
+from market import app, db  
+from market.models import Item, User
 from market.forms import RegisterForm
 from flask import render_template, redirect, url_for
 import click
@@ -43,6 +43,14 @@ def register_new_user():
     if register_form.validate_on_submit(): 
         user_name = register_form.username.data
         click.echo(click.style(f'user_name: {user_name}',  fg='green'))
+
+        new_user = User(username=register_form.username.data, 
+                    email_address=register_form.email_address.data, 
+                    password_hash=register_form.password2.data)
+        
+        with app.app_context():
+            db.session.add(new_user)
+            db.session.commit()
 
         return(redirect(url_for('groceries')))
     

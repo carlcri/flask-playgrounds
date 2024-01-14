@@ -220,3 +220,72 @@ The **{{ register_form.hidden_tag() }}** line generates the hidden input field f
 ```
 
 ![](https://i.imgur.com/v4OIWyK.png)
+
+Y ahora si. Se redirige hacia la ruta especificada:
+
+```py
+return(redirect(url_for('groceries')))
+```
+
+### Haciendo algunas Pruebas
+
+Por lo general sale un *warning* amarillo, pero muchas veces no, por ejemplo cuando el password no coincide, pero si lo imprime en la terminal.
+
+![](https://i.imgur.com/cnXfTck.png)
+
+Tambien esta validando cualquier cadena de texto, como correo, por lo que es necesario, instalarlo de otra forma saldra este error:
+
+
+    Exception
+    Exception: Install 'email_validator' for email validation support.
+
+Se añade una nueva linea en *requirements.txt*:
+
+    email_validator
+
+Y probamos:
+
+![](https://i.imgur.com/QOZmHq5.png)
+
+### Guardando los datos en la BD
+
+De esta forma se acceden los datos en la forma, por ejemplo para el password2:
+
+    register_form.password2.data 
+
+
+```py
+@app.route('/register', methods=['GET', 'POST']) 
+def register_new_user():
+    register_form = RegisterForm() 
+    context = {
+        'register_form': register_form,
+    }
+
+    if register_form.validate_on_submit(): 
+        user_name = register_form.username.data
+        click.echo(click.style(f'user_name: {user_name}',  fg='green'))
+
+        new_user = User(username=register_form.username.data, 
+                    email_address=register_form.email_address.data, 
+                    password_hash=register_form.password2.data)
+        
+        with app.app_context(): 👈
+            db.session.add(new_user)
+            db.session.commit()
+
+        return(redirect(url_for('groceries')))
+    
+    else:
+        click.echo(click.style('Something bad is happening', fg='red'))
+        print(register_form.errors)
+    
+    return render_template('register.html', **context)
+```
+
+### Realizando mas pruebas
+
+Aqui enviamos una forma que tenga varios errores, como vemos **register_form.errors** es un diccionario:
+
+![](https://i.imgur.com/tjlEXBO.png)
+
