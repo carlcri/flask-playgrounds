@@ -1,0 +1,16 @@
+{% extends 'base1.html'%}
+
+{% block styles %}
+    {{super()}}
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+{% endblock %}
+
+{% block title %}
+    {{super()}}
+    test
+{% endblock %}
+
+{% block content%}
+    <h3>Hello World War II</h3>
+    <h2>This is a test using the base1.html</h2>
+{% endblock%}

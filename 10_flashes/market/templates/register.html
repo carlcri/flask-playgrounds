@@ -1,0 +1,36 @@
+<!-- se hereda del base.html-->
+{% extends 'base.html'%}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block content %}
+
+    <!-- {{ register_form }} -->
+
+    <div class="container">
+        <h2 class="titulo-1">Llena el Formulario</h2>
+        <br>
+        <form action="" class="form-register" method="POST">
+            <!-- CSFR ToKEN -->
+            {{ register_form.hidden_tag() }}
+
+            <div class="form-register-field">{{ register_form.username.label() | upper }}</div>
+            {{ register_form.username(class="form-control", placeholder=" tu usuario")}}
+
+            <div class="form-register-field">{{ register_form.email_address.label() | upper }}</div>
+            {{ register_form.email_address(class="form-control", placeholder=" tu correo")}}
+
+            <div class="form-register-field">{{ register_form.password1.label() | upper }}</div>
+            {{ register_form.password1(class="form-control", placeholder="contraseña")}}
+
+            <div class="form-register-field">{{ register_form.password2.label() | upper }}</div>
+            {{ register_form.password2(class="form-control", placeholder="confirmar contraseña")}}
+
+            <br>
+            {{ register_form.submit(class="btn btn-lg btn-block btn-primary" )}}
+        </form>
+    </div>
+
+{% endblock %}
