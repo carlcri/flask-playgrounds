@@ -75,4 +75,92 @@ Al incluir {{ super() }} dentro del bloque scripts al final del documento, se es
 ```
 Al incluir los scripts, la alerta finalmente cierra. 😍
 
+## Empezando de nuevo desde cero
 
+Lo que hizimos esta muy bien, pero ahora desarrollaremos una nueva implementacion que permita mostrar los mensajes de error al momento de registrar un nuevo usuario. Borraremos lo hecho en la primera parte, y empezaremos desde cero. 
+
+*register_form.errors* es un diccionario:
+
+![](https://i.imgur.com/tjlEXBO.png)
+
+Pero solo vamos a imprimir los valores, y de una vez los vamos a enviar como un flash:
+
+```py
+    else:
+        click.echo(click.style('Something bad is happening', fg='red'))
+        for error_msg in register_form.errors.values():
+            flash(error_msg) 👈
+```
+
+La implementaremos un poco diferente en el base.html con un *context manager*:
+
+```html
+    {% with messages = get_flashed_messages() %}
+        {% for message in messages %}
+            {{message}}
+        {% endfor %}
+    {% endwith %}
+```
+
+![](https://i.imgur.com/nKosBpp.png)
+
+## Segunda Implementacion
+
+Necesitamos tal vez separar los mensajes por categorias, por eso en el context manager agregamos *with_categories=true*, y observamos el resultado:
+
+```html
+    {% with messages = get_flashed_messages(with_categories=true) %} 👈
+        {% for message in messages %}
+            {{message}}
+        {% endfor %}
+    {% endwith %}
+```
+
+Y ahora muestra, algo adicional que dice mensaje, que es la categoria:
+
+![](https://i.imgur.com/voIcAEN.png)
+
+Si en realidad le asignamos una categoria a nuestros mensajes, y aun mas le damos un nombre de una de las siguientes clases de bootstrap para renderizarlo con un color especifico:
+
+![](https://i.imgur.com/z3boppP.png)
+
+Vamos a categorizarlo como **danger**
+
+
+Pero en realidad no lo queremos mostrar, porque esa no es su utilidad:
+
+```html
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %} 👈
+            {{message}}
+        {% endfor %}
+    {% endwith %}
+```
+
+### ¿Entonces para que vamos a usar la categoria?
+
+la clave es darle el nombre a la categoria de las mismas clases de bootstrap asi:
+
+```html
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{category}} alert-dismissible"> 👈
+                <button type="button" data-dismiss="alert" class="close">&times;</button> 
+                {{message}}
+            </div>
+        {% endfor %}
+    {% endwith %}
+```
+
+Donde muy ingenionsamente alert-{{category}} sera igual a **alert-danger** 😊
+
+![](https://i.imgur.com/0ssKYfN.png)
+
+Igualmente añadimos la logica para crear un flask de registro exitoso de usuario:
+
+```py
+with app.app_context():
+    db.session.add(new_user)
+    db.session.commit()
+    flash(f'usuario: {user_name} creado con exito', category="success") 👈
+```

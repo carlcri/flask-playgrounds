@@ -12,14 +12,16 @@
         {%include 'navbar.html'%}
     {% endblock %}
 
-    {% for message in get_flashed_messages() %}
-        <div class="alert alert-success alert-dismissible">
-            <!--Se coloca un boton que permitira cerrar el flash, data-dismiss permitira cerrar la alerta-->
-            <button type="button" data-dismiss="alert" class="close">&times;</button>
-            {{message}}
-        </div>
-    {% endfor %}
-
+    <!-- Display Flashes-->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{category}} alert-dismissible">
+                <button type="button" data-dismiss="alert" class="close">&times;</button> 
+                {{message}}
+            </div>
+        {% endfor %}
+    {% endwith %}
+    
     {% block content%}
         <!--Contendio de los otros templates-->
     {% endblock%}

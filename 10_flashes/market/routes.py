@@ -51,12 +51,13 @@ def register_new_user():
         with app.app_context():
             db.session.add(new_user)
             db.session.commit()
-            flash('usuario registrado con exito')
+            flash(f'usuario: {user_name} creado con exito', category="success")
 
         return(redirect(url_for('groceries')))
     
     else:
         click.echo(click.style('Something bad is happening', fg='red'))
-        print(register_form.errors)
-    
+        for error_msg in register_form.errors.values():
+            flash(error_msg, category="danger")
+        
     return render_template('register.html', **context)
