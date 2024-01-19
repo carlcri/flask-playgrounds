@@ -1,6 +1,6 @@
 # FLASK FORMS
 
-Añadimos una linea a *requirements.txt.:
+Añadimos una linea a *requirements.txt*:
 
 - flask-wtf
 

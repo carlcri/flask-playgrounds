@@ -156,7 +156,7 @@ Donde muy ingenionsamente alert-{{category}} sera igual a **alert-danger** 😊
 
 ![](https://i.imgur.com/0ssKYfN.png)
 
-Igualmente añadimos la logica para crear un flask de registro exitoso de usuario:
+Igualmente añadimos la logica para crear un flash de registro exitoso de usuario:
 
 ```py
 with app.app_context():
@@ -164,3 +164,108 @@ with app.app_context():
     db.session.commit()
     flash(f'usuario: {user_name} creado con exito', category="success") 👈
 ```
+
+## ¿Que pasaria si se intenta crear un usuario que ya existe?
+
+Intentaremos crear al usuario *chambimbe*:
+
+![](https://i.imgur.com/ZUCSJRz.png)
+
+Dado que en la tabla o clase *User* el campo *username* es un campo unico, este error tiene total sentido
+
+### Intentando Consultar la BD desde la consola.
+
+Despues de muchos intentos, donde al importar desde la consola
+
+![](https://i.imgur.com/BQ0hf0C.png)
+
+Decidi hacer estos cambios en el archivo *Config*, para que cargue las variables de entorno directamente, y no desde el archivo *.env*. Una vez termine la prueba, vuelvo a descomentarlos:
+
+```py
+import os
+from dotenv import load_dotenv
+
+def secret_key():
+    load_dotenv()
+    SECRET_KEY='miclavesecreta' 👈
+#    SECRET_KEY = os.environ['SECRET_KEY']
+    return SECRET_KEY
+
+
+def sqlalchemy_uri():
+    load_dotenv()
+#    SQLALCHEMY_DATABASE_URI = os.environ['SQLALCHEMY_DATABASE_URI']
+    SQLALCHEMY_DATABASE_URI='sqlite:///data_base.db' 👈
+    return SQLALCHEMY_DATABASE_URI
+
+
+class Config():
+    SECRET_KEY = secret_key()   
+    SQLALCHEMY_DATABASE_URI = sqlalchemy_uri()
+    
+```
+
+Volvemos a intentarlo, y esta vez funciona normalmente:
+
+```py
+from market.config import Config
+from market.models import Item, User
+from market import app, db
+
+with app.app_context():
+    consulta = User.query.filter_by(username='chambimbe').first()
+```
+Hemos consultado si existe el usuario *chambimbe* el cual existe. Ahora, ¿Si el usuario no exite que pasa?
+
+![](https://i.imgur.com/zzzzKCu.png)
+
+Observamos que es un *None*. De esta forma reversaremos los cambios en *config*, y ahora si implementaremos la logica para manejar el error. 
+
+## Primera Implementacion
+
+Vamos a *routes.py*, y desde alli implementamos la logica:
+
+```py
+@app.route('/register', methods=['GET', 'POST']) 
+def register_new_user():
+    register_form = RegisterForm() 
+    context = {
+        'register_form': register_form,
+    }
+
+    if register_form.validate_on_submit(): 
+        user_name = register_form.username.data
+        click.echo(click.style(f'user_name: {user_name}',  fg='green'))
+
+        new_user = User(username=register_form.username.data, 
+                    email_address=register_form.email_address.data, 
+                    password_hash=register_form.password2.data)
+        
+        with app.app_context():
+            user_name_exists = User.query.filter_by(username=new_user.username).first() 👈
+
+            if user_name_exists:
+                print(f'usuario {user_name_exists.username} ya existe')
+                flash(f'usuario: {user_name_exists.username} ya exite. Intente nuevamente', category='danger') 👈
+            else:
+                db.session.add(new_user)
+                db.session.commit()
+                flash(f'usuario: {user_name} creado con exito', category="success")
+                return(redirect(url_for('groceries')))
+
+        
+    else:
+        click.echo(click.style('Something bad is happening', fg='red'))
+        for error_msg in register_form.errors.values():
+            flash(error_msg, category="danger")
+        
+    return render_template('register.html', **context)
+```
+
+- Se consulta la BD y se guarda la consulta.
+- Si la consulta no es un valor nulo, no realiza la transacion, y por el contrario, flashes un mensaje en color rojo.
+
+![](https://i.imgur.com/UPsli98.png)
+
+
+

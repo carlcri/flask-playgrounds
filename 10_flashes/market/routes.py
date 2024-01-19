@@ -49,12 +49,18 @@ def register_new_user():
                     password_hash=register_form.password2.data)
         
         with app.app_context():
-            db.session.add(new_user)
-            db.session.commit()
-            flash(f'usuario: {user_name} creado con exito', category="success")
+            user_name_exists = User.query.filter_by(username=new_user.username).first()
 
-        return(redirect(url_for('groceries')))
-    
+            if user_name_exists:
+                print(f'usuario {user_name_exists.username} ya existe')
+                flash(f'usuario: {user_name_exists.username} ya exite. Intente nuevamente', category='danger')
+            else:
+                db.session.add(new_user)
+                db.session.commit()
+                flash(f'usuario: {user_name} creado con exito', category="success")
+                return(redirect(url_for('groceries')))
+
+        
     else:
         click.echo(click.style('Something bad is happening', fg='red'))
         for error_msg in register_form.errors.values():
