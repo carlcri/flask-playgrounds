@@ -268,4 +268,103 @@ def register_new_user():
 ![](https://i.imgur.com/UPsli98.png)
 
 
+## Segunda Implementacion
 
+Esta primera implementacion se podria seguir mejorando, hasta por ejemplo, que sea capaz de reconocer si ya hay un correo guardado, y lo descarte.
+
+Sin embargo, hay una forma mas profesional, que en un principio puede parecer mas complicada, pero que al final, va resular mucho mas apropiada, y escalable.
+
+Lo primero seria deshacer los cambios en *routes.py*. 
+
+### Modificando forms.py
+
+Escribir una validacion si el usuario que se esta intentando registrar ya existe:
+
+1. Con la funcion validate_username
+2. Se importa el modelo, y app:
+
+        from market.models import User
+        from market import app
+
+3. Se importa *ValidationError*:
+
+        from wtforms.validators import DataRequired, Length, EqualTo, Email, ValidationError
+
+ Y asi quedaria, vamos a  ver si funciona:
+
+ ```py
+     def validate_username(self, username_to_validate):
+        with app.app_context():
+            consulta = User.query.filter_by(username=username_to_validate).first()
+        
+        if consulta is not None:
+            raise ValidationError('Usuario ya existe, intente nuevamente') 
+ ```
+
+ ![](https://i.imgur.com/wAsKSiM.png)
+
+#### Solucionando el error
+
+Vamoa a examinar que hay dentro de *username_to_validate*:
+
+```py
+    def validate_username(self, username_to_validate):
+        print(username_to_validate) 👈
+        print(type(username_to_validate)) 👈
+        print(username_to_validate.data) 👈
+        with app.app_context():
+            consulta = User.query.filter_by(username=username_to_validate).first()
+        
+        if consulta is not None:
+            raise ValidationError('Usuario ya existe, intente nuevamente') 
+```
+
+![](https://i.imgur.com/F16hPTx.png)
+
+Quien esta guardando el nombre del usuario en este caso *benitocamelas* es *username_to_validate.data*, asi que realizamos los cambios:
+
+```py
+    def validate_username(self, username_to_validate):
+        print(username_to_validate)
+        print(type(username_to_validate))
+        print(username_to_validate.data)
+        with app.app_context():
+            consulta = User.query.filter_by(username=username_to_validate.data).first() 👈
+            print(consulta)
+        if consulta is not None:
+            raise ValidationError(f'Usuario ya existe, intente nuevamente') 
+```
+
+Ahora mira lo que muestra en la consola, y tambien como se comporta:
+
+![](https://i.imgur.com/kWVcjl8.png)
+
+![](https://i.imgur.com/W3Ln2qc.png)
+
+Te pretuntaras como es que la funcion *validate_username* va ser ejecutada en el proyecto. Lo que es especial acerca de la libreria *validators* es que podemos crear ciertas funciones de una manera muy especifica, y *FlaskForm* se encargara del resto. 
+
+Al nombrar la funcion  *validate_username*, FlaskForm va a buscar a todas las funciones que con el prefijo *validate_*, y posteriormente va mirar que hay despues del underscore, y hay la palabra *username*, que a su vez, es un field de la forma.
+
+Es importante entender porque la funcion para validar si el usuario es valido o no, se llamo de esta forma especifica, porque de otra forma no va a funcionar. 
+
+### Mejorar el codigo anterior para que incluya la validacion del correo electronico
+
+```py
+    def validate_email_address(self, email_to_validate):
+        with app.app_context():
+            consulta = User.query.filter_by(email_address=email_to_validate.data).first()
+            if consulta is not None:
+                raise ValidationError(f'correo: {consulta} ya existe, intento otro correo')
+```
+
+Y aqui una variacion, las dos funcionan, solo que en la primera flashea el nombre del usuario, y en la de abajo si flashes el correo
+
+```py
+    def validate_email_address(self, email_to_validate):
+        with app.app_context():
+            consulta = User.query.filter_by(email_address=email_to_validate.data).first().email_address
+            if consulta is not None:
+                raise ValidationError(f'correo {consulta}: ya existe, intento otro correo')
+```
+
+![](https://i.imgur.com/AUQ9KdL.png)
