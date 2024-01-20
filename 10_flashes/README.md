@@ -1,5 +1,13 @@
 # Flask Bootstrap
 
+## Correr el Script automaticamente
+
+Para correr automaticamente todo lo del ambiente virtual, y las variables necesarias para correr Flask, corre este script:run_flask_server.sh
+
+de esta forma:
+
+    source run_flask_server.sh
+
 En este modulo hay dos rutas: home and test. En donde en cada una se renderiza una navbar de diseño diferente. 
 
 Por ejemplo, el template test hereda de base1, quien a su vez hereda de bootstrap/base.html.
