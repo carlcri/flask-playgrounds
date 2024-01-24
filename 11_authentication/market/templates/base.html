@@ -1,0 +1,36 @@
+{% extends "bootstrap/base.html" %}
+
+{% block styles %}
+    {{super()}}
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+{% endblock %}
+
+
+{% block body %}
+
+    {% block navbar %}
+        {%include 'navbar.html'%}
+    {% endblock %}
+
+    <!-- Display Flashes-->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{category}} alert-dismissible">
+                <button type="button" data-dismiss="alert" class="close">&times;</button> 
+                {{message}}
+            </div>
+        {% endfor %}
+    {% endwith %}
+    
+    {% block content%}
+        <!--Contendio de los otros templates-->
+    {% endblock%}
+
+    <!-- importa los archivos javascript de bootstrap, y hereda, sin esto no se puede cerrar los flashes-->
+    {% block scripts %}
+        {{super()}}
+    {% endblock%}
+    
+{% endblock %}
+
+
