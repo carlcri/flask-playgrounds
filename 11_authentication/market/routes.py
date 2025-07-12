@@ -54,7 +54,7 @@ def register_new_user():
             db.session.commit()
             flash(f'usuario: {user_name} creado con exito', category="success")
 
-        return(redirect(url_for('groceries')))
+        return(redirect(url_for('login_user')))
     
     else:
         click.echo(click.style('Something bad is happening', fg='red'))
@@ -73,7 +73,7 @@ def delete_user():
         user = User.query.filter_by(id=id).first()
 
         if not user:
-            flash(f'usuario con {id} no existe', category="danger")
+            flash(f'usuario con id:{id} no existe', category="danger")
         else:
             db.session.delete(user)
             db.session.commit()
@@ -82,11 +82,26 @@ def delete_user():
     return render_template('delete.html', id=id)
 
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login_user():
     login_form = LoginForm()
     context = {
         'login_form': login_form,
     }
 
+    if login_form.validate_on_submit():
+        user_name = login_form.username.data.lower()
+        return redirect(url_for('groceries'))
+    
+    else:
+        click.echo(click.style('Something bad is happening in login', fg='red'))
+        for error_msg in login_form.errors.values():
+            flash(error_msg, category="danger")
+
     return render_template('login.html', **context)
+
+
+@app.route('/test2')
+def test2():
+    flash('hola soy un flashhh', category='info')
+    return render_template('test2.html')

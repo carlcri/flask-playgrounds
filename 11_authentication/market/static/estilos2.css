@@ -1,0 +1,41 @@
+.navbar {
+    background-color: #789fc7;
+}
+
+.navbar-collapse {
+    padding-right: 2rem;
+}
+
+body {
+    background-color: #212121;
+    color: white
+}
+
+/*212121*/
+
+.main-table{
+    padding-left: 20px;
+    padding-right: 40px;
+    padding-bottom: 20px;
+}
+
+#titulo-tabla{
+    color: aqua;
+}
+
+.container{
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
+.form-register{
+    color: rgb(11, 11, 94);
+}
+
+.form-register-field{
+    padding-top: 7px;
+}
+
+.titulo-1{
+    text-align: center;
+}

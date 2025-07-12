@@ -1,0 +1,31 @@
+    <!--navbar-->
+    <nav class="navbar navbar-expand-md navbar-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="{{url_for('home')}}">
+            <img src="../static/images/owl1.png" width="40" alt="owl logo">
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-toggler" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse flex-row-reverse" id="navbar-toggler">
+            <ul class="navbar-nav d-flex justify-content-center y align-items-center">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{{url_for('test')}}">Test</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Pricing</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  CRUD Operations
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{{url_for('login_user')}}">Login</a></li>
+                  <li><a class="dropdown-item" href="{{url_for('register_new_user')}}">Register</a></li>
+                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+    </nav>

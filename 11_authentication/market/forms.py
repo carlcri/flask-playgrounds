@@ -30,5 +30,11 @@ class RegisterForm(FlaskForm):
 
 class LoginForm(FlaskForm):
     username = StringField(label='Usuario', validators=[DataRequired()], render_kw={"placeholder": "Ingrese usuario"})
-    password = StringField(label='Contraseña', validators=[DataRequired()], render_kw={"placeholder": "ingrese contraseña"})
+    password = PasswordField(label='Contraseña', validators=[DataRequired()], render_kw={"placeholder": "ingrese contraseña"})
     submit = SubmitField(label='Enviar')
+
+    def validate_username(self, username_to_validate):
+        with app.app_context():
+            consulta = User.query.filter_by(username=username_to_validate.data.lower()).first()
+        if consulta is None:
+            raise ValidationError(f'Usuario {username_to_validate.data.lower()} no existe, intente nuevamente' )
